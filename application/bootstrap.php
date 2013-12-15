@@ -107,11 +107,11 @@ Kohana::modules(array(
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
         // 'kohana-mssql'   => MODPATH.'kohana-mssql',
-         'simpleauth'   => MODPATH.'simpleauth',
+        // 'simpleauth'   => MODPATH.'simpleauth',
        //  'minify'   => MODPATH.'minify',
 	));
 
-//Cookie::$salt = 'somerandomstring';
+Cookie::$salt = 'parinas';
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.

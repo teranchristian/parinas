@@ -18,30 +18,17 @@ return array
         'charset' => 'utf8',
         'profiling' => TRUE,
     ),
-    'default1' => array(
-        'type' => 'pdo',
+    'auth' => array(
+       'type' => 'mysql',
         'connection' => array(
-            /**
-             * The following options are available for PDO:
-             *
-             * string   dsn         Data Source Name
-             * string   username    database username
-             * string   password    database password
-             * boolean  persistent  use persistent connections?
-             */
-            'dsn' => 'mysql:host=localhost;dbname=mycparinas',
+            'hostname' => 'localhost',
             'username' => 'root',
             'password' => 'root',
             'persistent' => FALSE,
+            'database' => 'login',
         ),
-        /**
-         * The following extra options are available for PDO:
-         *
-         * string   identifier  set the escaping identifier
-         */
         'table_prefix' => '',
-        'charset' => FALSE,
-        'caching' => FALSE,
+        'charset' => 'utf8',
         'profiling' => TRUE,
     ),
 );
