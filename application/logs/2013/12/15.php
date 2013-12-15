@@ -88,3 +88,8 @@
 #5 C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\parinas\system\classes\kohana\request.php(1138): Kohana_Request_Client->execute(Object(Request))
 #6 C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\parinas\index.php(109): Kohana_Request->execute()
 #7 {main}
+2013-12-15 07:13:12 --- ERROR: ErrorException [ 1 ]: Class 'Auth' not found ~ APPPATH\classes\controller\logon.php [ 18 ]
+2013-12-15 07:13:12 --- STRACE: ErrorException [ 1 ]: Class 'Auth' not found ~ APPPATH\classes\controller\logon.php [ 18 ]
+--
+#0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main}
