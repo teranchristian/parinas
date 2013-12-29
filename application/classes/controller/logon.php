@@ -24,25 +24,25 @@ class Controller_Logon extends Controller_Template_webPage {
 
 
         if ($_POST) {
-
             if ($auth->login($_POST['EMAIL'], $_POST["PWD"])) {
                 if ($auth->has_role('administrator')) {
-                    //$this->request->redirect('orden/gerencia');
+                    $this->request->redirect('orden/gerencia');
                 }
                 if ($auth->has_role('logistica')) {
                     // $this->request->redirect('orden/logistica');
+                    $this->request->redirect('orden/logistica');
                 }
                 $msg = 'error</br> no tiene roles';
-                $modules = $auth->getNavigationItems();
-                foreach ($modules as $headitem => $subitems) {
-                    print_r($subitems);
-                    //this could be a controller
-                    $moduletype = $modules[$headitem]['type'];
-                    echo '<br/><b><a href="' . url::site($moduletype) . '">' . $headitem . '</a></b><br/>';
-                    foreach ($subitems['subitems'] as $subitem) {
-                        echo '-<a href="' . url::site($moduletype . '/' . $subitem['type']) . '">' . $subitem['actionName'] . '</a><br/>';
-                    }
-                }
+                //$modules = $auth->getNavigationItems();
+//                foreach ($modules as $headitem => $subitems) {
+//                  //  print_r($subitems);
+//                    //this could be a controller
+//                    $moduletype = $modules[$headitem]['type'];
+//                    echo '<br/><b><a href="' . url::site($moduletype) . '">' . $headitem . '</a></b><br/>';
+//                    foreach ($subitems['subitems'] as $subitem) {
+//                        echo '-<a href="' . url::site($moduletype . '/' . $subitem['type']) . '">' . $subitem['actionName'] . '</a><br/>';
+//                    }
+//                }
             } else {
                 // Auth::instance()->logout(TRUE);
                 $msg = 'error';

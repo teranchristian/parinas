@@ -17,7 +17,7 @@
                         </div>
                         |  <?php echo HTML::anchor('logon/signout', 'Logout'); ?> </h3>            
                 <?php } else { ?>
-                    <h3 class="currentUser"></h3>    
+                    <h3 class="currentUser"></h3>  
                 <?php } ?>
             </div>
         </div>

@@ -100,11 +100,17 @@ $(document).ready(function() {
         });
     });
 
-
+    //update el centro de costo, when the obra is selected
     $('#idObra').on('change', function() {
         $('#ccosto').val($("option:selected", this).attr("rel")); // or $(this).val()
     });
     $('#idObra').trigger('change');
+    
+    //update direccion when the proveedor is selected
+    $('#idProveedor').on('change', function() {
+        $('#proveedor').val( $("option:selected", this).attr("rel") ); // or $(this).val()
+    });
+    $('#idProveedor').trigger('change');
     
     //agregar calendario al al input
     $(function() {

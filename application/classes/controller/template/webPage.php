@@ -22,28 +22,49 @@ class Controller_Template_webPage extends Controller_Template {
      */
     public $script = FALSE;
     public $menu = FALSE;
+    public $title = "";
 
     public function before() {
 
+        //echo Request::initial()->action();
+        // echo Request::initial()->controller();  
+
         parent::before();
 
+
+//        $a = Auth::instance();
+//
+        //#Check user auth and role        
+        //echo Request::initial()->action();
+         //echo Request::initial()->controller();
+//        $auth = Auth::instance();
+//        //if ($auth->logged_in()) {
+//        if ($auth->logged_in() && (Request::initial()->controller() != 'logon')){
+//            if ($auth->has_action( Request::initial()->controller(), Request::initial()->action())) {
+//                echo 'yeah the user can delete pages<br/>';
+//            }else 
+//               Requesat::current()->redirect('');
+//        }
+//       Database::$default = 'default';
         #Open session
         $this->session = Session::instance();
 
 
 //        if (!SimpleAuth::instance()->logged_in() && (Request::initial()->controller() != 'logon'))
 //            Request::current()->redirect('');
-        //========================        
+        //========================    
+        //echo 1;
+
         //++++++++++++++++++++++++    
         //#Check user auth and role        
         //echo Request::initial()->action();
         // echo Request::initial()->controller();    
         //control user role
         $action_name = Request::initial()->action();
-        if (($this->secure_actions !== FALSE))
-            if (isset($this->secure_actions[Session::instance()->get('Role')]))
-                if (in_array($action_name, ($this->secure_actions[Session::instance()->get('Role')])))
-                    Request::current()->redirect('product');
+//        if (($this->secure_actions !== FALSE))
+//            if (isset($this->secure_actions[Session::instance()->get('Role')]))
+//                if (in_array($action_name, ($this->secure_actions[Session::instance()->get('Role')])))
+//                    Request::current()->redirect('product');
         //++++++++++++++++++++++++
         //========================
 
@@ -69,6 +90,7 @@ class Controller_Template_webPage extends Controller_Template {
         //$menu=  $menu;
 
         if (!$this->request->is_ajax()) {
+            //echo 2;
             if ($this->auto_render) {
                 $styles = array(
                     'media/bootstrap/css/bootstrap.css' => 'screen, projection',
@@ -84,20 +106,14 @@ class Controller_Template_webPage extends Controller_Template {
 
                 $this->template->header = View::factory('template/header')
                         ->set('styles', array_merge($this->template->styles, $styles));
-
+                //$this->template->header=null;
                 $this->template->menuUser = View::factory('menu-user');
-
-
-                if (Session::instance()->get('rol') == 'Gerencia')
-                    $this->template->menu = View::factory('menu-gerencia')
-                            ->bind('menu', $this->menu);
-                else
-                    $this->template->menu = View::factory('menu-logistica')
-                            ->bind('menu', $this->menu);
-
-
-
-
+//$this->template->menuUser=null;
+                $modules = Auth::instance()->getNavigationItems();
+                $this->template->menu = View::factory('menu')
+                        ->bind('menu', $this->menu)
+                        ->bind('modules', $modules);
+//                $this->template->menu =null;
                 $this->template->footer = View::factory('template/footer')
                         ->set('scripts', array_merge($this->template->scripts, $scripts));
             }

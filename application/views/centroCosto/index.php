@@ -6,9 +6,9 @@
     </div>
     <br/>
     <div class="row">
-        <div class="span12">
+<!--        <div class="span12">
             <button type="button" class="btn btn-warning pull-right" onclick="document.location.href='centroCosto/nuevo';">Nuevo Centro de Costo</button>
-        </div>
+        </div>-->
     </div>
     <br/>	
     <div class="mainlist">

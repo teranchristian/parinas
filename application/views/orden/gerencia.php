@@ -52,7 +52,7 @@
                             <?php echo $item->fechaOrden == '' ? '<center>--</center>':date("d/m/Y", strtotime($item->fechaOrden) )?>
                         </td>
                         <td>
-                           <?php echo $item->apellido .' '. $item->nombre?>
+                           <?php echo $item->lastName .' '. $item->name?>
                         </td>
                         <td>
                             <span class="label <?php echo $item->procesoOrdenColor?>"><?php echo $item->procesoOrden?></span>

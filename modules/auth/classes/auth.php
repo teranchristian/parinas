@@ -22,6 +22,7 @@ class Auth extends ORM {
 
     public static function instance($config = array()) {
         // Database::instance('auth');
+       // Database::$default = 'auth';
         if (!isset(Auth::$_instance)) {
             Auth::$_instance = new Auth($config);
         }
@@ -29,7 +30,7 @@ class Auth extends ORM {
     }
 
     public function __construct($config = array()) {
-        Database::$default = 'auth';
+        
 
         if (empty($config)) {
             $config['lifetime'] = 1209600;
@@ -90,6 +91,7 @@ class Auth extends ORM {
             Session::instance()->set('usuario', $user->lastName." ".$user->name);
             Session::instance()->set('idUsuario', $user->id);
             Session::instance()->set('rol', $role->rolName);
+            Session::instance()->set('idRol', $role->id);
             Session::instance()->set('Login', 'True');
             //$user = ORM::factory('user')->where('id', '=', 1)->find();
 
@@ -272,32 +274,6 @@ class Auth extends ORM {
 
 
         //should we do this with ORM? ^^
-//        $db = new Database;
-//        $result = $db->query('
-//							select  as id
-//							from 
-//								,
-//								,
-//								,
-//								,
-//								
-//							where
-//								modules.' . $field . ' = ' . $db->escape($module) . '
-//							AND
-//								 = 1
-//							AND
-//								 = 
-//							AND
-//								 = ' . $db->escape() . '
-//							AND
-//								 = 
-//							AND
-//								 = 
-//							AND
-//								 = 
-//							AND
-//								 = ' . $db->escape()
-//        );array('roles_users.user_id', 'id')
             $result = ORM::factory('module')
                 
                 ->join('auth_actions', 'INNER')
@@ -316,9 +292,6 @@ class Auth extends ORM {
                 ->where('module.' . $field , '=', $module)                    
                 ->and_where('auth_actions.type', '=', $type)
                 ->and_where('roles_users.user_id', '=', $_SESSION['auth_user'])
-                
-                
-                   
                 ->find_all();
         if ($result->count() == 1) {
             return TRUE;
@@ -333,7 +306,6 @@ class Auth extends ORM {
         //get the modules and actions for in the navigation menu
     public function getNavigationItems() {
         //$auth = new Auth;
-       
         $result = ORM::factory('module')
                 ->select(array('module.id', 'moduleid'),
                          array('module.name', 'modulename'),
@@ -344,11 +316,13 @@ class Auth extends ORM {
                 ->on('module.id', '=', 'auth_actions.module_id')
                 ->where('auth_actions.navigation_item', '=', '1')
                 ->and_where('module.enabled', '=', '1')
+                ->order_by('module.order')
+                ->order_by( 'auth_actions.order')
                 
                 ->find_all();
         $returnArray = array();
         $i = 0;
-        foreach ($result as $value) {
+        foreach ($result as $value) { 
             if ($this->has_action($value->moduleid, $value->actiontype)) {
                 $returnArray[$value->modulename]['subitems'][$i]['type'] = $value->actiontype;
                 $returnArray[$value->modulename]['subitems'][$i]['name'] = $value->moduletype;

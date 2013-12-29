@@ -5,7 +5,10 @@ class Model_Obra extends ORM {
 
     protected $_table_name = 'obra';
     protected $_primary_key = 'idObra';
-
+    protected $_belongs_to = array('centroCosto' => array(
+                                'model' => 'centroCosto',
+                                'foreign_key' => 'idCentroCosto',
+                                ),);
     function getObraList() {
         return ORM::factory('obra')
                         ->select('obra.idObra', 'centroCosto.codigo', 'Obra.descripcion', 'obra.fechaInicio', 'obra.fechaFin', array('estadoObra.descripcion', 'descripcionEstatus'))

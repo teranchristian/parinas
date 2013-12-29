@@ -13,14 +13,14 @@
                 <div class="control-group">
                     <label  class="control-label" style="width:auto;margin-right: 7px;">Proveedor: </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <select name="idProveedor" id="idProveedor" class="span8" >
+                        <select name="idProveedor" id="idProveedor" class="span7" >
                             <?php
                             foreach ($proveedorList as $item) {
-                                // if (isset($obra))
-                                //   $selected = $item->idCentroCosto == $obra->idCentroCosto ? 'selected' : NULL;
+                                 if (isset($orden))
+                                   $selected = $item->idProveedor == $orden->idProveedor ? 'selected' : NULL;
                                 ?>
 
-                                <option <?php echo @$selected ?> value="<?php echo $item->idProveedor ?>" rel="<?php echo $item->proveedor ?>"><?php echo $item->proveedor ?></option>
+                                <option <?php echo @$selected ?> value="<?php echo $item->idProveedor ?>" rel="<?php echo $item->direccion ?>"><?php echo $item->proveedor ?></option>
                             <?php } ?>
                         </select>
 
@@ -30,7 +30,7 @@
                 <div class="control-group">
                     <label class="control-label" style="width:auto;margin-right: 5px;">Direccion : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span11" name="direccion" id="direccion" readonly="true" />                        
+                        <input type="text" class="span11" name="proveedor" id="proveedor" readonly="true" />                        
                     </div>
                 </div>
                 <div class="control-group">
@@ -219,9 +219,11 @@
         </div>
 <?php } ?>
     <br/>
-    <div class="modal-footer">            
-        <input type="button" class="btn btn-warning pull-left"  value="Enviar" onclick="$('#idProcesoOrden').val('2');
-        $('#ordenForm').submit();"/>
+    <div class="modal-footer">       
+        <?php if (Request::initial()->action()!='nuevo') { ?>
+            <input type="button" class="btn btn-warning pull-left"  value="Enviar" onclick="$('#idProcesoOrden').val('2');            
+            $('#ordenForm').submit();"/>
+        <?php } ?>
         <input type="button" class="btn btn-success"  value="Guardar" onclick="$('#ordenForm').submit();"/>
         <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="history.go(-1);">Cancelar</button>
     </div>

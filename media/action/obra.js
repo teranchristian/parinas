@@ -59,7 +59,8 @@ $(document).ready(function() {
     });   
     $('#idObra').on('change', function() {
         $('#ccosto').val( $("option:selected", this).attr("rel") ); // or $(this).val()
-});
+    });
+    
     
     
 })

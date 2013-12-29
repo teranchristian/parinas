@@ -6,24 +6,25 @@
     </div>
     <br/>
     <div class="form" style="margin-top: 40px">      
-        <form action="<?php echo URL::site('user/updatePwd') ?>">            
+        <form name="ordenForm" id="ordenForm" action="<?php echo URL::site('orden/archivar') . '/' . @$orden->idOrden ?>" method="POST" onsubmit=" $('#mensajeAnterior').val($('#mensajeAnteriorHTML').html());">                         
+            <input type="hidden" name="idProcesoOrden" id="idProcesoOrden" value="<?php echo isset($orden->idProcesoOrden) ? $orden->idProcesoOrden : "1" ?>"/>
             <div class=" form-horizontal">
                 <div class="control-group">
-                    <label for="current_password" class="control-label" style="width:auto;margin-right: 5px;">Senor(es): </label>
+                    <label for="" class="control-label" style="width:auto;margin-right: 5px;">Senor(es): </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span9" value="BP SOLUTIONS S.A.C NO" readonly="true"/>
-                        <input type="text" class="span2" value="N 28.06.2013-001 NO" readonly="true" />
+                        <input type="text" class="span9" value="<?php echo @$orden->proveedor->proveedor ?>" readonly="true"/>
+                        <input type="text" class="span2" value="" readonly="true" />
                     </div>
                 </div>
                 <div class="control-group">
-                    <label for="current_password" class="control-label" style="width:auto;margin-right: 5px;">Direccion : </label>
+                    <label for="" class="control-label" style="width:auto;margin-right: 5px;">Direccion : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span10" value="Av. Del Ejercito 1020 - Urb El Molino - Trujillo NO" readonly="true"/>
-                        <input type="text" class="span1" value="<?php echo @$orden->codigo?>" readonly="true"/>
+                        <input type="text" class="span10" value="<?php echo @$orden->proveedor->direccion ?>" readonly="true"/>
+                        <input type="text" class="span1" value="<?php echo @$orden->obra->centroCosto->codigo?>" readonly="true"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label for="current_password" class="control-label" style="width:auto;margin-right: 33px;">Obra : </label>
+                    <label for="" class="control-label" style="width:auto;margin-right: 33px;">Obra : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
                         <input type="text" class="span9" value="<?php echo @$orden->descripcion ?>" readonly="true"/>
                         <input type="text" class="span2" value="<?php echo @$orden->fechaOrden == '' ? '' : date("d/m/Y", strtotime($orden->fechaOrden)) ?>" readonly="true" />
@@ -32,7 +33,7 @@
                 <div class="control-group">
                     <label for="current_password" class="control-label" style="width:auto;">Solicitante : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span3" value="Coke" readonly="true"/>
+                        <input type="text" class="span3" value="<?php echo @$orden->solicitante->lastName.', '.@$orden->solicitante->name ?>" readonly="true"/>
                     </div>
                 </div>
 
@@ -103,25 +104,27 @@
                     </table>
                 </div>
                 <br/>
-<?php if (isset($orden->mensaje)) { ?>
+                <?php if (isset($orden->mensaje)) { ?>
                     <div class="control-group">
                         <label  class="control-label">Notas anteriores : </label>
                         <div class="controls ">
                             <div  id='mensajeAnteriorHTML'  style="overflow: auto;width: 605px;height: 200px;   border: 1px solid #ccc; background: #eeeeee;padding: 5px;"><?php echo $orden->mensaje ?></div>
                         </div>
                     </div>
-<?php } ?>
+                <?php } ?>
                 <div class="control-group">
-                    <label for="current_password" class="control-label">Nueva nota : </label>
+                    <label  class="control-label">Nueva nota : </label>
                     <div class="controls ">
-                        <textarea  rows="5" class="field span8">               
-                        </textarea>
+                        <textarea  rows="5" class="field span8" name="mensaje" id="mensaje"></textarea>
                     </div>
                 </div>
+                <input type='hidden' id='mensajeAnterior' name='mensajeAnterior'  />
 
             </div>
             <br/>
-            <div class="modal-footer">                            
+            <div class="modal-footer">     
+                <input type="button" class="btn  pull-left"  value="Orden De Compra" onclick="window.location='<?php echo URL::site('reporte/ordenCompra') . '/' . @$orden->idOrden ?>'"/>
+                <input type="button" class="btn btn-info pull-left"  value="Archivar" onclick="$('#idProcesoOrden').val('5');$('#ordenForm').submit();"/>
                 <input type="submit" class="btn btn-success"  value="Guardar"/>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="history.go(-1);">Cancelar</button>
             </div>

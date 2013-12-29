@@ -109,6 +109,7 @@ Kohana::modules(array(
         // 'kohana-mssql'   => MODPATH.'kohana-mssql',
         // 'simpleauth'   => MODPATH.'simpleauth',
        //  'minify'   => MODPATH.'minify',
+         'html2pdf'   => MODPATH.'html2pdf',
 	));
 
 Cookie::$salt = 'parinas';
@@ -124,4 +125,3 @@ Route::set('default', '(<controller>(/<action>(/<id>)))')
 
   View::set_global('page_title', 'M y C Parinas');
 define('HASH_GENERAL_KEY', '+$@@MixitUp*+-');
-

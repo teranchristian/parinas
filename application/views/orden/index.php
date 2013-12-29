@@ -1,4 +1,4 @@
-<div class="container">
+<!--<div class="container">
     <div class="row">
         <div class="span12">
             <div class="headblocktitle">Orden de compra de trabajo</div>
@@ -122,4 +122,4 @@ Cambio realizado
             </div>
         </form>    
     </div>
-</div>
+</div>-->

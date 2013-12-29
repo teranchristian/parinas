@@ -5,7 +5,8 @@ class Model_centroCosto extends ORM {
 
     protected $_table_name = 'centrocosto';
     protected $_primary_key = 'idCentroCosto';
-
+    
+    
 //    function insert($DATA) {
 //            $query=DB::insert('centroCosto',array_keys ($DATA));
 //            $query ->values(array(
@@ -32,6 +33,7 @@ class Model_centroCosto extends ORM {
     }
 
     function getCentroCostoList() {
+        
         return ORM::factory('centroCosto')
                         ->where('status', ' = ', 'ACTIVO')
                         ->order_by('codigo', 'ASC')
