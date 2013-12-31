@@ -114,6 +114,7 @@ class Controller_Orden extends Controller_Template_webPage {
 //        else
 //            $filter =array('1','2','3','4');
         
+        
         $ordenList = Model::factory('orden')->getOrdenList(array('1', '2', '3', '4'),Session::instance()->get('idUsuario'));
 
 
@@ -127,3 +128,4 @@ class Controller_Orden extends Controller_Template_webPage {
 }
 
 ?>
+

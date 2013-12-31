@@ -13,7 +13,7 @@
                 <div class="control-group">
                     <label  class="control-label" style="width:auto;margin-right: 7px;">Proveedor: </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <select name="idProveedor" id="idProveedor" class="span7" >
+                        <select name="idProveedor" id="idProveedor" class="span8" >
                             <?php
                             foreach ($proveedorList as $item) {
                                  if (isset($orden))
@@ -23,8 +23,7 @@
                                 <option <?php echo @$selected ?> value="<?php echo $item->idProveedor ?>" rel="<?php echo $item->direccion ?>"><?php echo $item->proveedor ?></option>
                             <?php } ?>
                         </select>
-
-                        <input type="text" class="span3"  readonly="true"/>
+                        <input type="text" class="span2 text-right"  readonly="true" value="<?php echo @sprintf('%06u',$orden->numeroOrden)?>"/>
                     </div>
                 </div>                
                 <div class="control-group">

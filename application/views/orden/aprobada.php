@@ -13,7 +13,7 @@
                     <label for="" class="control-label" style="width:auto;margin-right: 5px;">Senor(es): </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
                         <input type="text" class="span9" value="<?php echo @$orden->proveedor->proveedor ?>" readonly="true"/>
-                        <input type="text" class="span2" value="" readonly="true" />
+                        <input type="text" class="span2 text-right"  readonly="true" value="<?php echo @sprintf('%06u',$orden->numeroOrden)?>"/>
                     </div>
                 </div>
                 <div class="control-group">
@@ -34,6 +34,12 @@
                     <label for="current_password" class="control-label" style="width:auto;">Solicitante : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
                         <input type="text" class="span3" value="<?php echo @$orden->solicitante->lastName.', '.@$orden->solicitante->name ?>" readonly="true"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="moneda" class="control-label" style="width:auto;margin-right: 15px;">Moneda : </label>
+                    <div class="controls controls-row row-fluid" style="margin-left:auto">
+                        <input id="moneda" type="text" class="span3" value="<?php echo ($orden->monedaObra=='PEN')?'SOLES':'DOLARES'; ?>" readonly="true"/>
                     </div>
                 </div>
 
@@ -65,7 +71,7 @@
                             <?php
                             $id = 1;
                             $total = 0;
-                            foreach ($productoList as $item) {
+                            foreach ($productoList as $item) :
                                 ?>
                                 <tr>
                                     <td >
@@ -81,15 +87,14 @@
                                         <?php echo sprintf('%03u', $item->cantidad) ?>
                                     </td>
                                     <td class="text-right">
-                                        <?php echo $item->precio ?>
+                                        <?php echo number_format($item->precio,2,'.',',')  ?>
                                     </td>
                                     <td class="text-right total">
-    <?php echo ($item->cantidad * $item->precio) ?>
+                                        <?php echo number_format($item->cantidad * $item->precio,2,'.',','); ?>
                                     </td>
                                 </tr>
-
-    <?php $total+=($item->cantidad * $item->precio);
-} ?>
+                               <?php $total+=($item->cantidad * $item->precio);
+                                endforeach; ?>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -97,7 +102,7 @@
                                     TOTAL
                                 </th>
                                 <th class="text-right">
-                                    <span id="grandtotal"> $<?php echo $total ?></span>
+                                    <span id="grandtotal"> $<?php echo number_format($total,2,'.',',') ?></span>
                                 </th>
                             </tr>
                         </tfoot>

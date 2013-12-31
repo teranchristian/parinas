@@ -3,22 +3,22 @@
     <!--
     table.page_header {width: 100%; border: none; border-bottom: solid 0.5mm #000000; padding: 2mm}
     table.page_footer {width: 100%; border: none; background-color: #eeeeee; border-top: solid 0.5mm #000000; padding: 2mm}
-    table.info_header{width: 100%; border: none; border-top: solid 0.1mm #000000; font-size: 7pt;  border-bottom: 0.6mm solid #000000;}
+    table.info_header{width: 100%; border: none; font-size: 7pt;  border-bottom: 0.6mm solid #000000;}
+    
+    table.cliente{width: 100%; border: none; font-size: 9pt;  border-bottom: 0.6mm solid #000000;}
 
-    table.conteudo{width: 100%;border:1px;}    
-    table.conteudo{font-weight:normal; font-size:7pt;}
-    table.conteudo th{font-weight:normal;border-bottom:0.1mm solid #dddddd; }
-    table.conteudo td{font-weight:normal; border-bottom:0.1mm solid #dddddd; font-size:07pt;}
-    table.conteudo .titulo{background-color: #F6F6F6;text-align:center;  vertical-align:middle;}
-    table.conteudo .titulo h2{font-size:9pt;}
+    table.producto{width: 100%;border:1px;}    
+    table.producto{font-weight:normal; font-size:9pt;}
+    table.producto th{font-weight:normal;border-bottom:0.1mm solid #dddddd; }
+    table.producto td{font-weight:normal; border-bottom:0.1mm solid #dddddd; font-size:9pt;}
+    table.producto .titulo{background-color: #F6F6F6;text-align:center;  vertical-align:middle;}
+    table.producto .titulo h2{font-size:11pt;}
 #signature { height: auto; width: 150px;  }
 
     -->
 </style>
-<page backtop="35mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 7pt">
-
+<page backtop="30mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 7pt">
     <page_header>
-
         <table class="page_header">
             <tr>
                 <td style="width: 70%; text-align: left">
@@ -28,11 +28,10 @@
 
                 <td style="width: 30%; text-align:right;">
                     <h2 style="float: right; clear: right;" class="pull-right" >Orden de Compra</h2>    
-                    <b>RUC</b> 20222232750
+                    <b>RUC</b> <?php echo @$empresa->ruc?>
 
                 </td>
             </tr>
-
         </table>
     </page_header>
     <page_footer>
@@ -48,12 +47,23 @@
 <table border="0px" style="width: 100%;" class="info_header" >
     <tr>
         <td style="width: 60%; text-align: left;font-size: 15px;">
-            <span style="font-size: 17px; font-weight: bold;">M y C Parinas S.A.</span><br/>
+            <span style="font-size: 17px; font-weight: bold;"><?php echo @$empresa->nombre?></span><br/>
 
             <div style="padding-left:20px">
-                <b>Talara : </b>Av. tasd asdasdlkj asdasdasd asdasdasd asdasdasdas asdasdasd<br/>
-                <b>Lima :</b> callasd ras - Lince<br/>
-                <b>Telefonos :</b> 2138382
+                <table>
+                 <?php foreach ($empresa->direccion->find_all() as $item) : ?>
+                    <tr>
+                        <td>
+                            <b><?php echo $item->departamento?> : </b>
+                        </td>
+                        <td>
+                            <?php echo $item->direccion?> <br/>
+                            <b>Telefono(s) :</b> <?php echo $item->telefono?> <br/>
+                            <b>Fax :</b> <?php echo $item->fax?> <br/>
+                        </td>
+                </tr>
+                <?php endforeach;?>
+                </table>
             </div>
         </td>
         <td style="width: 5%;">                    
@@ -75,7 +85,7 @@
                         <b>N. DE ORDEN </b>
                     </td>
                     <td style="text-align:right;">
-
+                        <b><?php echo @sprintf('%06u',$orden->numeroOrden)?></b>
                     </td>
                 </tr>
                 <tr>
@@ -83,7 +93,7 @@
                         <b>MONEDA </b>
                     </td>
                     <td style="text-align:right;">
-
+                        <b><?php echo ($orden->monedaObra=='PEN')?'SOLES':'DOLARES'; ?></b>
                     </td>
                 </tr>
             </table>
@@ -92,7 +102,7 @@
 </table>
 <!-- Início Informações do Header  -->
 
-<table class="info_header">
+<table class="cliente">
     <tr>
         <td colspan="2" style="width: 100%; text-align: left">SENOR(ES): <strong><?php echo @$orden->proveedor->proveedor ?></strong></td>
     </tr>
@@ -111,10 +121,10 @@
 <P/>
 <!-- Fim Informações do Header  -->
 <div style="margin-bottom: 150px;">
-<table border="0px" class="conteudo" cellpadding="0px" cellspacing="2px" >
+<table border="0px" class="producto" cellpadding="0px" cellspacing="2px" >
     <tr>
         <td style="width: 40px;" class="titulo" >ITEM</td>
-        <td style="width: 400px;" class="titulo" >DESCRIPCION</td>
+        <td style="width: 375px;" class="titulo" >DESCRIPCION</td>
         <td style="width: 50px;" class="titulo" >UNIDAD</td>
         <td style="width: 60px;" class="titulo" >CANTIDAD</td>
         <td style="width: 50px;" class="titulo" >P/UNIDAD</td>
@@ -126,23 +136,23 @@
     foreach ($productoList as $item) :
         ?>
         <tr>
-            <td style=" text-align: center"  >
+            <td style=" text-align: center;vertical-align: central"  >
                 <?php echo sprintf('%02u', $id++) ?>
             </td>
-            <td style="width: 400px;">
-                <span style="width:400px;"><?php echo $item->descripcion ?></span>
+            <td style="width: 375px;;vertical-align: central">
+                <span style="width:375px;"><?php echo $item->descripcion ?></span>
             </td>
-            <td style="text-align: center">
+            <td style="text-align: center;vertical-align: central">
                 <?php echo $item->unidad ?>
             </td>
-            <td style="text-align: right">
+            <td style="text-align: right;vertical-align: central">
                 <?php echo sprintf('%03u', $item->cantidad) ?>
             </td>
-            <td style="text-align: right" >
-                <?php echo $item->precio ?>
+            <td style="text-align: right;vertical-align: central" >
+                <?php echo number_format($item->precio,2,'.',','); ?>
             </td>
-            <td style="text-align: right" >
-                <?php echo ($item->cantidad * $item->precio) ?>
+            <td style="text-align: right;vertical-align: central" >
+                <?php echo number_format($item->cantidad * $item->precio,2,'.',','); ?>
             </td>
         </tr>
 
@@ -153,7 +163,7 @@
     <tr>
         <td style="border: 0mm;" colspan="4"></td>
         <td style="border: 0mm;" style="text-align: right" >SUBTOTAL</td>
-        <td style="text-align: right"  ><?php echo $total; ?></td>
+        <td style="text-align: right"  ><?php echo number_format($total,2,'.',','); ?></td>
     </tr>
     <tr>
         <td style="border: 0mm;" colspan="4"></td>
