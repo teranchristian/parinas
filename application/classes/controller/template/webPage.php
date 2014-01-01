@@ -101,8 +101,12 @@ class Controller_Template_webPage extends Controller_Template {
                     'media/bootstrap/js/bootstrap.js',
                     'media/js/jqueryCus.js',
                 );
-
-
+                
+                $path = 'media/action/'.Request::initial()->controller().'.js';
+                $additional_js=null;
+                if (file_exists($path)) {
+                    $additional_js=$path;
+                }
 
                 $this->template->header = View::factory('template/header')
                         ->set('styles', array_merge($this->template->styles, $styles));
@@ -114,6 +118,8 @@ class Controller_Template_webPage extends Controller_Template {
                         ->bind('menu', $this->menu)
                         ->bind('modules', $modules);
 //                $this->template->menu =null;
+                //array_merge($additional_js, $scripts);
+                array_push($scripts,$additional_js);
                 $this->template->footer = View::factory('template/footer')
                         ->set('scripts', array_merge($this->template->scripts, $scripts));
             }

@@ -6,13 +6,13 @@ class Model_Producto extends ORM {
     protected $_table_name = 'producto';
     protected $_primary_key = 'idProducto';
 
-    function getProductoList($id) {
-        return ORM::factory('producto')                   
-                        ->where('idOrden', '=', $id)
-                        ->and_where('status', '=', 'ACTIVO')
-                        ->order_by('idProducto', 'ASC')                        
-                        ->find_all();
-    }
+//    function getProductoList($id) {
+//        return ORM::factory('producto')                   
+//                        ->where('idOrden', '=', $id)
+//                        ->and_where('status', '=', 'ACTIVO')
+//                        ->order_by('idProducto', 'ASC')                        
+//                        ->find_all();
+//    }
 
 
 

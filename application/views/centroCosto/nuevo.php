@@ -1,4 +1,4 @@
-<script>
+<!--<script>
     $(document).ready(function(){
         $("form").validate({
             rules: {
@@ -19,11 +19,12 @@
             }
         });
     });
-</script>  
+</script>  -->
+<?php $errors = isset($errors) ? $errors : array(); ?>
 <div class="container">
     <div class="row">
         <div class="span12">
-            <div class="headblocktitle">Nuevo Centro de Costo</div>
+            <div class="headblocktitle"><?php echo (@$centroCosto->idCentroCosto? "Editar" : "Nuevo"); ?>  Centro de Costo</div>
         </div>
     </div>
     <br/>
@@ -46,6 +47,8 @@
                     <label for="codigo" class="control-label">Codigo</label>
                     <div class="controls">
                         <input  type="text" name="codigo" id="codigo" value="<?php echo @$centroCosto->codigo ?>"/>
+                        <?php //echo Form::input("codigo", @$centroCosto->codigo); ?>
+                        <span class="error"><?php echo '<br/>'.Arr::get($errors, 'codigo');?></span>                        
                     </div>
                 </div>
                 
@@ -53,6 +56,7 @@
                     <label for="descripcion" class="control-label">Descripcion</label>
                     <div class="controls">
                         <input  type="text" name="descripcion" id="descripcion" value="<?php echo @$centroCosto->descripcion ?>"/>
+                        <span class="error"><?php echo '<br/>'.Arr::get($errors, 'descripcion');?></span>                        
                     </div>
                 </div>
                  

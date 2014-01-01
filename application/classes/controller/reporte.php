@@ -12,7 +12,6 @@ class Controller_reporte extends Controller_Template_webPage {
        // echo $this->request->param('id');
         $orden = Model::factory('orden')->getOrden($this->request->param('id'));
         $empresa =Model::factory('empresa')->find();
-        $productoList = Model::factory('producto')->getProductoList($this->request->param('id'));
          $config = array(
                 'author'   => 'Parinas',
                 'title'    => 'Orden de compra',
@@ -22,7 +21,6 @@ class Controller_reporte extends Controller_Template_webPage {
        $view = View_PDF::factory('admin/pdf', $config)
        ->set('orden', $orden)
        ->set('empresa', $empresa)
-       ->set('productoList', $productoList)
         ->render();
 
         //$this->template->content = View::factory('admin/pdf');

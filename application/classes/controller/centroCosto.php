@@ -7,8 +7,7 @@ class Controller_CentroCosto extends Controller_Template_webPage {
         $centroCostoList = ORM::factory('centroCosto')->getCentroCostoList();
 
         $areaList = ORM::factory('area')->getAreaList();
-        $this->template->scripts = array('media/action/centroCosto.js',
-            'media/js/jquery-ui.js',);
+        $this->template->scripts = array('media/js/jquery-ui.js',);
         $this->template->styles = array('media/css/jquery.css' => 'screen, projection',);
         $this->template->content = View::factory('centroCosto/index')
                 ->set('areaList', $areaList)
@@ -36,13 +35,35 @@ class Controller_CentroCosto extends Controller_Template_webPage {
 
 // end editar    
     public function action_guardar() {
+        $areaList = Model::factory('area')->getAreaList();
         @$ID = $this->request->param('id');
-        Model::factory('centroCosto')->guardar($_POST, $this->request->param('id'));
-        $this->request->redirect('centroCosto/');
+        //Model::factory('centroCosto')->guardar($this->request->post(), $this->request->param('id'));
+        $errors = array();
+        
+        $centroCosto = ORM::factory('centroCosto', $ID);
+        $centroCosto ->values( $this->request->post() );
+        
+        try {
+        $centroCosto->save();
+       
+         } catch (ORM_Validation_Exception $ex) {
+       
+            $errors = $ex->errors('validation');
+            $this->template->content = View::factory('centroCosto/nuevo')
+                ->set('errors', $errors)
+                    ->set('centroCosto', $centroCosto)
+                ->set('areaList', $areaList);
+            
+        }
+       
+        //$this->request->redirect('centroCosto/');
+        
     }
 
     public function action_eleminar() {
         if ($this->request->is_ajax()) {
+            // $this->_empty_rules;
+             
             Model::factory('centroCosto')->eliminar($_POST['ID']);
             echo json_encode('ok');
         } else {

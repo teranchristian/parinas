@@ -10,10 +10,8 @@ class Controller_Orden extends Controller_Template_webPage {
      * Logistica
      * -Solo puede ver las ordenes por usuario
      */
-    public function action_ver() {
-        
-            $this->template->content = View::factory('orden/index');
-        
+    public function action_ver() {        
+            $this->template->content = View::factory('orden/index');        
     }
 
     /**
@@ -35,10 +33,7 @@ class Controller_Orden extends Controller_Template_webPage {
     public function action_editar() {
         $this->template->scripts = array('media/action/orden.js', 'media/js/validate.js', 'media/bootstrap/js/datepicker.js', 'media/js/jquery-ui.js',);
         $this->template->styles = array('media/bootstrap/css/datepicker.css' => 'screen, projection', 'media/css/jquery.css' => 'screen, projection',);
-
-
-        $obraList = Model::factory('obra')->getObraList();
-        $productoList = Model::factory('producto')->getProductoList($this->request->param('id'));
+        $obraList = Model::factory('obra')->getObraList();        
         $orden = Model::factory('orden')->getOrden($this->request->param('id'));
         $proveedorList = Model::factory('proveedor')->getProveedorList();
         $view = null;
@@ -59,7 +54,6 @@ class Controller_Orden extends Controller_Template_webPage {
         $this->template->content = View::factory($view)
                 ->set('proveedorList', $proveedorList)
                 ->set('obraList', $obraList)
-                ->set('productoList', $productoList)
                 ->set('orden', $orden);
         //Editar Orden de compra de trabajo
     }

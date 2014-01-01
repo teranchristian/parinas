@@ -70,8 +70,8 @@
                         <tbody>                          
                             <?php
                             $id = 1;
-                            $total = 0;
-                            foreach ($productoList as $item) :
+                            $total = 0;    
+                            foreach ($orden->producto->find_all() as $item) :
                                 ?>
                                 <tr>
                                     <td >

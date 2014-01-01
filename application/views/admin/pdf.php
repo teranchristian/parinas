@@ -133,7 +133,7 @@
     <?php
     $id = 1;
     $total = 0;
-    foreach ($productoList as $item) :
+    foreach ($orden->producto->find_all() as $item) :
         ?>
         <tr>
             <td style=" text-align: center;vertical-align: central"  >

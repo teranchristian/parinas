@@ -5,19 +5,10 @@ class Model_Orden extends ORM {
 
     protected $_table_name = 'orden';
     protected $_primary_key = 'idOrden';
-    protected $_belongs_to = array('proveedor' => array(
-                                'model' => 'proveedor',
-                                'foreign_key' => 'idProveedor',
-                                ),
-                             'solicitante' => array(
-                                'model' => 'user',
-                                'foreign_key' => 'idSolicitante',
-                                
-                                ),
-                             'obra' => array(
-                                'model' => 'obra',
-                                'foreign_key' => 'idObra',
-                                ));
+    protected $_belongs_to = array('proveedor' => array('model' => 'proveedor','foreign_key' => 'idProveedor',),
+                                   'solicitante' => array('model' => 'user','foreign_key' => 'idSolicitante',),
+                                   'obra' => array('model' => 'obra','foreign_key' => 'idObra',));
+    protected $_has_many = array('producto' => array('model' => 'producto','foreign_key' => 'idOrden',),);
     
     function getOrdenList($filter) {
         return ORM::factory('orden')
