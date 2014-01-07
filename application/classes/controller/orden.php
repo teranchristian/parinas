@@ -2,6 +2,13 @@
 
 class Controller_Orden extends Controller_Template_webPage {
 
+     public function action_index() {        
+         if (Session::instance()->get('rol') == 'administrator')
+            self::action_gerencia();
+        else
+            self::action_logistica();
+                 
+    }
     /**
      * Ver Ordenes de compra
      * Este metodo muestra todas las Ordenes de compra
@@ -30,19 +37,19 @@ class Controller_Orden extends Controller_Template_webPage {
                 ->set('obraList', $obraList);
     }
 
-    public function action_editar() {
-        $this->template->scripts = array('media/action/orden.js', 'media/js/validate.js', 'media/bootstrap/js/datepicker.js', 'media/js/jquery-ui.js',);
+    public function action_editar() {        
+        $this->template->scripts = array( 'media/js/validate.js', 'media/bootstrap/js/datepicker.js', 'media/js/jquery-ui.js',);
         $this->template->styles = array('media/bootstrap/css/datepicker.css' => 'screen, projection', 'media/css/jquery.css' => 'screen, projection',);
-        $obraList = Model::factory('obra')->getObraList();        
-        $orden = Model::factory('orden')->getOrden($this->request->param('id'));
-        $proveedorList = Model::factory('proveedor')->getProveedorList();
+            
+        $orden=Model::factory('orden')->getOrden($this->request->param('id'));
         $view = null;
+        Model::factory('orden')->actualizarIGV($this->request->param('id'));
         switch ($orden->idProcesoOrden) {
-            case 1: $view = 'orden/nuevo';
+            case 1: $view = 'orden/logistica/nuevo';
                 break;
-            case 2: $view = 'orden/ver';
+            case 2: $view = 'orden/ver'; //por aprovar
                 break;
-            case 3: $view = 'orden/nuevo';
+            case 3: $view = 'orden/logistica/nuevo';
                 break;
             case 4: $view = 'orden/aprobada';
                 break;
@@ -52,8 +59,8 @@ class Controller_Orden extends Controller_Template_webPage {
             $view = 'orden/gerencia/nuevo';
 
         $this->template->content = View::factory($view)
-                ->set('proveedorList', $proveedorList)
-                ->set('obraList', $obraList)
+                ->set('proveedorList', Model::factory('proveedor')->getProveedorList())
+                ->set('obraList', Model::factory('obra')->getObraList())
                 ->set('orden', $orden);
         //Editar Orden de compra de trabajo
     }
@@ -62,29 +69,18 @@ class Controller_Orden extends Controller_Template_webPage {
         @$ID = $this->request->param('id');
         if ($_POST['mensaje'])
             $_POST['mensaje'] = '<b>' . Session::instance()->get('usuario') . "</b><span class='float:right;'> - (" . date('h:m a d/m/Y') . ")</span></br><hr> - " . $_POST['mensaje'] . '</br></p>' . $_POST['mensajeAnterior'];
+        else 
+            $_POST['mensaje'] = $_POST['mensajeAnterior'];
         Model::factory('orden')->guardar($_POST, $ID);
-//        if ($auth->has_role('administrator')) {
-//                    $this->request->redirect('orden/gerencia');
-//        }
-//        if ($auth->has_role('logistica')) {
-//            // $this->request->redirect('orden/logistica');
-//                    $this->request->redirect('orden/gerencia');
-//                }
-        if (Session::instance()->get('rol') == 'administrator')
-            self::action_gerencia();
-        else
-            self::action_logistica();
-        //$this->template->content = View::factory('orden/editar');
+        
+        $this->request->redirect('orden/index');
     }
     public function action_archivar() {
         @$ID = $this->request->param('id');     
         if ($_POST['mensaje'])
             $_POST['mensaje'] = '<b>' . Session::instance()->get('usuario') . "</b><span class='float:right;'> - (" . date('h:m a d/m/Y') . ")</span></br><hr> - " . $_POST['mensaje'] . '</br></p>' . $_POST['mensajeAnterior'];
         Model::factory('orden')->archivar($_POST, $ID);
-        if (Session::instance()->get('rol') == 'administrator')
-            self::action_gerencia();
-        else
-            self::action_logistica();
+        self::action_index();
     }
     
  
@@ -95,7 +91,7 @@ class Controller_Orden extends Controller_Template_webPage {
             'media/js/action/prodAct.js',);
         $ordenList = Model::factory('orden')->getOrdenList(array('1', '2', '3'));
         //$this->template->scripts = array('media/js/validate.js','media/js/action/userAct.js');
-        $this->template->content = View::factory('orden/gerencia')
+        $this->template->content = View::factory('orden/gerencia/index')
                 ->set('ordenList', $ordenList);
     }
 
@@ -103,18 +99,8 @@ class Controller_Orden extends Controller_Template_webPage {
     //logistica
     public function action_logistica() {
         //$this->template->scripts = array('media/js/validate.js','media/js/action/userAct.js');
-//        if (Session::instance()->get('rol') == 'Gerencia')
-//            $filter =array('2','3');
-//        else
-//            $filter =array('1','2','3','4');
-        
-        
-        $ordenList = Model::factory('orden')->getOrdenList(array('1', '2', '3', '4'),Session::instance()->get('idUsuario'));
-
-
-
-
-        $this->template->content = View::factory('orden/logistica')
+        $ordenList = Model::factory('orden')->getOrdenListFilterUser(array('1', '2', '3', '4'),Session::instance()->get('idUsuario'));
+        $this->template->content = View::factory('orden/logistica/index')
                 ->set('ordenList', $ordenList);
     }
 

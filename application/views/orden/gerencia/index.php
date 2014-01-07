@@ -2,7 +2,7 @@
 <div class="container">
         <div class="row">
             <div class="span12">
-                <div class="headblocktitle">Ordenes</div>
+                <div class="headblocktitle">Ordenes GERENCIA</div>
             </div>
         </div>
         <br/>	

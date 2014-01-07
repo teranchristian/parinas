@@ -30,31 +30,31 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($areaList as $itemArea) { ?>
+                <?php  foreach ($areaList as $areaItem): ?>
                 <tr  class="info">
                     <td colspan="4" style="font-weight: bold">
-                        <?php echo $itemArea->area?>
+                       <?php echo $areaItem->area?>
                     </td>
                 </tr>                   
-                <?php foreach ($centroCostoList as $itemCosto) {
-                    if ($itemArea->idArea==$itemCosto->idArea){ ?>
+                <?php foreach ($areaItem->centroCosto->where('status','=','ACTIVO')->find_all() as $centroCostoItem): ?>
                 <tr>
                     <td>
-                        <?php echo $itemCosto->codigo?>
+                        <?php echo $centroCostoItem->codigo?>
                     </td>
                     <td>
-                        <?php echo $itemCosto->descripcion?>
+                        <?php echo $centroCostoItem->descripcion?>
                     </td>
                     <td>
-                        <center><a  class='icon iconEdit' href="<?php echo URL::site('centroCosto/editar/'.$itemCosto->idCentroCosto)?>" ></a></center>
+                        <center><a  class='icon iconEdit' href="<?php echo URL::site('centroCosto/editar/'.$centroCostoItem->idCentroCosto)?>" ></a></center>
                     </td>
                     <td>
-                        <center><i id="del" value="<?php echo $itemCosto->idCentroCosto ?>" class="icon-trash"></i></center>
+                        <center><i id="del" value="<?php echo $centroCostoItem->idCentroCosto ?>" class="icon-trash"></i></center>
                     </td>
                 </tr>   
-                <?php }} ?>
-                <?php } ?>
+                <?php endforeach; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>	
 </div>
+

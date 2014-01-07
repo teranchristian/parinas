@@ -4,18 +4,17 @@ class Controller_CentroCosto extends Controller_Template_webPage {
 
     public function action_index() {
         //$centroCostoList = Model::factory('centroCosto')->getCentroCostoList();
-        $centroCostoList = ORM::factory('centroCosto')->getCentroCostoList();
 
         $areaList = ORM::factory('area')->getAreaList();
         $this->template->scripts = array('media/js/jquery-ui.js',);
         $this->template->styles = array('media/css/jquery.css' => 'screen, projection',);
         $this->template->content = View::factory('centroCosto/index')
-                ->set('areaList', $areaList)
-                ->set('centroCostoList', $centroCostoList->as_array());
+                ->set('areaList', $areaList);
     }
 
 // start insertar
     public function action_nuevo() {
+        $this->template->validation=$this->valid();        
         $areaList = Model::factory('area')->getAreaList();
         $this->template->scripts = array('media/js/validate.js',);
         $this->template->content = View::factory('centroCosto/nuevo')
@@ -25,7 +24,8 @@ class Controller_CentroCosto extends Controller_Template_webPage {
 // end insertar
 // start editar
     public function action_editar() {
-        //echo $this->request->param('id');
+        $this->template->validation=$this->valid();
+        $this->template->scripts = array('media/js/validate.js',);
         $centroCosto = Model::factory('centroCosto')->getCentroCosto($this->request->param('id'));
         $areaList = Model::factory('area')->getAreaList();
         $this->template->content = View::factory('centroCosto/nuevo')
@@ -34,27 +34,12 @@ class Controller_CentroCosto extends Controller_Template_webPage {
     }
 
 // end editar    
-    public function action_guardar() {
-        $areaList = Model::factory('area')->getAreaList();
-        @$ID = $this->request->param('id');
-        //Model::factory('centroCosto')->guardar($this->request->post(), $this->request->param('id'));
-        $errors = array();
-        
-        $centroCosto = ORM::factory('centroCosto', $ID);
-        $centroCosto ->values( $this->request->post() );
-        
-        try {
-        $centroCosto->save();
-       
-         } catch (ORM_Validation_Exception $ex) {
-       
-            $errors = $ex->errors('validation');
-            $this->template->content = View::factory('centroCosto/nuevo')
-                ->set('errors', $errors)
-                    ->set('centroCosto', $centroCosto)
-                ->set('areaList', $areaList);
+    public function action_guardar() {       
+        $areaList = Model::factory('area')->getAreaList();        
+        Model::factory('centroCosto')->guardar($this->request->post(), $this->request->param('id'));        
+        $this->request->redirect('centroCosto/');
             
-        }
+        
        
         //$this->request->redirect('centroCosto/');
         
@@ -69,6 +54,15 @@ class Controller_CentroCosto extends Controller_Template_webPage {
         } else {
             header('location: ' . URL);
         }
+    }
+    
+      public function valid() {        
+            return array(
+                'idArea' => array('required: true',),
+                'codigo' => array('required: true','number: true'),
+                'descripcion' => array('required: true'),
+            );        
+            return array();
     }
 
 }

@@ -5,55 +5,28 @@ class Model_centroCosto extends ORM {
 
     protected $_table_name = 'centrocosto';
     protected $_primary_key = 'idCentroCosto';
-    protected $_validation_required = FALSE;
-
-    public function rules() {
-        echo 1;
-        
-       // if ($this->validation_required()) {
-            return array(
-                'codigo' => array(array('not_empty'),),
-                'descripcion' => array(array('not_empty'),),
-            );
-        //} else {
-            // skip validation 
-            return array();
-        //}
-    }
-
-    public function labels() {
-        return array('codigo' => 'Codigo',);
-    }
-
-    // protected $_filters = array('codigo' => array('strtoupper‎'));
-
+    protected $_has_many = array('obra' => array('model' => 'obra','foreign_key' => 'idCentroCosto',),);
+ 
     public function filters() {
 
         return array(
             // Field Filters
             // $field_name => array(mixed $callback[, array $params = array(':value')]),
             'codigo' => array(
-                // PHP Function Callback, default implicit param of ':value'
                 array('trim'),
+            ),
+            'descripcion' => array(
+               array(array($this, 'your_callback')),
             ),
         );
     }
-
-    protected $_labels = array(
-        'codigo' => 'pretty name',
-    );
+public function your_callback($value)
+{   
+    return preg_replace('/\s+/', ' ', $value);
+}
 
     // protected $_ignored_columns = array('document');
-//    function insert($DATA) {
-//            $query=DB::insert('centroCosto',array_keys ($DATA));
-//            $query ->values(array(
-//                        $DATA['idArea'],
-//                        trim($DATA['codigo']),
-//                        strtoupper(trim($DATA['descripcion']))
-//                ));
-//            $query->execute();       
-//    }
-//    
+ 
     function guardar($DATA, $ID) {
         $query = ORM::factory('centroCosto', $ID);
         $query->values($DATA);
@@ -66,8 +39,6 @@ class Model_centroCosto extends ORM {
 
 //    
     function eliminar($ID) {
-        $this->_valid=FALSE;
-        $this->_validation=FALSE;
         $query = ORM::factory('centroCosto', $ID);
         $query->status = 'ELIMINADO';
         $query->save();

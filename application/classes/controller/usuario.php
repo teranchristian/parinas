@@ -1,7 +1,12 @@
 <?php
 
-class Controller_Usuario extends Controller_Demo {
+class Controller_Usuario extends Controller_Template_webPage {
 
+     public function action_password() {        
+        $this->template->scripts = array('media/js/validate.js',);
+        $this->template->content = View::factory('usuario/password');
+    }
+    
     public function action_index() {
         $usuariosList = Model::factory('usuario')->getUsuariosList();
         $this->template->content = View::factory('usuario/index')

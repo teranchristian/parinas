@@ -68,7 +68,7 @@ class Auth extends ORM {
             $delete = ORM::factory('user_token')
                     ->where("user_id", "=", ($user->id))
                     ->find();
-            if (count($delete) > 0)
+            if ($delete->loaded())
                 $delete->delete();
 
             $token = ORM::factory('user_token');

@@ -1,7 +1,13 @@
 
 $(document).ready(function() {
- 
-    var hitEvent = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
+ var hitEvent = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
+ //Cambiar abbreviatura de moneda
+   $('#moneda').on('change', function() {
+        $('#monedaSigno').html($("option:selected", this).attr("rel")); // or $(this).val()
+    });
+    $('#moneda').trigger('change');
+ //PRODUCTO
+    
     $('#agregar').live(hitEvent, function(e) {
 // var ID = $(this).attr("value");
         if ($('#descripcion').val() != "") {
@@ -16,10 +22,12 @@ $(document).ready(function() {
                 dataType: "json",
                 cache: false,
                 success: function(dataJSON) {
-                    if (dataJSON.idItem)
+                    
+                    if (dataJSON.idItem){
                         updateRow(dataJSON)
-                    else
+                    }else{
                         addRow(dataJSON)
+                    }
 
                     grandTotal();
 
@@ -43,6 +51,7 @@ $(document).ready(function() {
         $("#idProducto").val($(this).attr("value"));
     });
 
+     
     $('#del').live(hitEvent, function(e) {
         var posY = hitEvent == 'touchstart' ? 'top' : e.clientY + 20;
         var ID = $(this).attr("value");
@@ -127,6 +136,7 @@ function pad(str, max) {
 }
 
 function addRow(dataJSON) {
+    alert(1);
     idRow = pad($('#productoList tbody tr').length + 1, 2);
     $('#productoList   > tbody:last').append('<tr >' +
             '<td> ' +
@@ -156,9 +166,10 @@ function addRow(dataJSON) {
             '</tr>');
 }
 
+//FINISH UPDATE
 function updateRow(dataJSON) {
-    $("#productoList   > tbody > tr").eq(dataJSON.idItem - 1).remove();
-    $('#productoList   tbody tr ').eq(dataJSON.idItem - 2).after('<tr >' +
+    //$("#productoList   > tbody > tr").eq(dataJSON.idItem - 1).remove();
+    $('#productoList > tbody tr:eq('+(dataJSON.idItem-1)+')').replaceWith('<tr >' +
             '<td> ' +
             dataJSON.idItem +
             '</td>' +

@@ -12,7 +12,7 @@
                                 <span class="icon-align-justify"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="user/settings">Change your password</a></li>
+                                <li><?php echo HTML::anchor('usuario/password', 'Cambiar password'); ?> </li>
                             </ul>
                         </div>
                         |  <?php echo HTML::anchor('logon/signout', 'Logout'); ?> </h3>            

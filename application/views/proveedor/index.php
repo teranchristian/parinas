@@ -4,12 +4,6 @@
                 <div class="headblocktitle">Proveedores</div>
             </div>
         </div>
-        <br/>
-        <div class="row">
-            <div class="span12">
-                <button type="button" class="btn btn-warning pull-right" onclick="document.location.href='proveedor/nuevo';">Nuevo proveedor</button>                
-            </div>
-        </div>
         <br/>	
         <div class="mainlist">
             <table border="0" cellpadding="1px" cellspacing="0px" width="100%" nowrap="nowrap"  id="example" class="table-bordered data-table table table-hover" style="border: 1px solid black;">

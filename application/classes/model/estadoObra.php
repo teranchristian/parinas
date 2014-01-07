@@ -1,7 +1,10 @@
 
 <?php
 
-class Model_estadoObra extends Model {
+class Model_estadoObra extends ORM {
+
+    protected $_table_name  = 'estadoObra'; 
+protected $_primary_key  = 'idEstadoObra'; 
 
     function getEstadoObraList() {
          return DB::select()->from('estadoObra')

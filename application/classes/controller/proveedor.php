@@ -6,7 +6,7 @@ class Controller_Proveedor extends Controller_Template_webPage {
 
     public function action_index() {
         $proveedorList = Model::factory('proveedor')->getProveedorList();
-        $this->template->scripts = array('media/action/obra.js', 'media/js/jquery-ui.js',);
+        $this->template->scripts = array( 'media/js/jquery-ui.js',);
         $this->template->styles = array('media/css/jquery.css' => 'screen, projection',);
         $this->template->content = View::factory('proveedor/index')
                 ->set('proveedorList', $proveedorList);
@@ -34,7 +34,7 @@ class Controller_Proveedor extends Controller_Template_webPage {
 
     public function action_eleminar() {
         if ($this->request->is_ajax()) {
-            Model::factory('obra')->eliminar($_POST['ID']);
+            Model::factory('proveedor')->eliminar($_POST['ID']);
             echo json_encode('ok');
         } else {
             header('location: ' . URL);

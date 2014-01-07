@@ -8,62 +8,28 @@ class Model_Obra extends ORM {
     protected $_belongs_to = array('centroCosto' => array(
                                 'model' => 'centroCosto',
                                 'foreign_key' => 'idCentroCosto',
-                                ),);
+                                ),'estadoObra' => array(
+                                'model' => 'estadoObra',
+                                'foreign_key' => 'idEstadoObra',
+                                ));
     function getObraList() {
         return ORM::factory('obra')
-                        ->select('obra.idObra', 'centroCosto.codigo', 'Obra.descripcion', 'obra.fechaInicio', 'obra.fechaFin', array('estadoObra.descripcion', 'descripcionEstatus'))
-                        ->join('centroCosto', 'INNER')->on('centroCosto.idCentroCosto', '=', 'Obra.idCentroCosto')
-                        ->join('estadoObra', 'INNER')->on('estadoObra.idEstadoObra', '=', 'Obra.idEstadoObra')
+                        ->select('obra.idObra',  'Obra.descripcion', 'obra.fechaInicio', 'obra.fechaFin')
                         ->where('Obra.status', '=', 'ACTIVO')
                         ->order_by('obra.idObra', 'ASC')
                         ->find_all();
     }
 
-//
-//    function insert($DATA) {
-//        $fechaInicio = $DATA['fechaInicio'] == '' ? NULL : date("Y-m-d", strtotime(str_replace('/', '-', $DATA['fechaInicio'])));
-//        $fechafin = $DATA['fechaFin'] == '' ? NULL : date("Y-m-d", strtotime(str_replace('/', '-', $DATA['fechaFin'])));
-//        DB::insert('obra', array_keys($DATA))
-//                ->values(array(
-//                    $DATA['idCentroCosto'],
-//                    ucwords(strtolower(trim($DATA['descripcion']))),
-//                    $DATA['moneda'],
-//                    $DATA['montoContrato'],
-//                    $DATA['idEstadoObra'],
-//                    $fechaInicio,
-//                    $fechafin,
-//                    $DATA['idUsuario']
-//                        //date("Y-m-d", strtotime(str_replace('/', '-', $DATA['fechaInicio'])) ),
-//                        //date("Y-m-d", strtotime($DATA['fechaInicio']) )
-//                ))
-//                ->execute();
-//    }
-
     function guardar($DATA, $ID) {
-//        $query = DB::update('Obra');
-//        $query->set(array(
-//            'idArea' => $DATA['idArea'],
-//            'codigo' => trim($DATA['codigo']),
-//            'descripcion' => strtoupper(trim($DATA['descripcion']))
-//        ));
-//        $query->where('idCentroCosto', '=', $ID);
-//        $query->execute();
-//                    ,
-//                    $DATA['moneda'],
-//                    $DATA['montoContrato'],
-//                    $DATA['idEstadoObra'],
-//                    $fechaInicio,
-//                    $fechafin,
-//                    $DATA['idUsuario']
-//                        //date("Y-m-d", strtotime(str_replace('/', '-', $DATA['fechaInicio'])) ),
-//                        //date("Y-m-d", strtotime($DATA['fechaInicio']) )
         $query = ORM::factory('Obra', $ID);
         $query->descripcion = ucwords(strtolower(trim($DATA['descripcion'])));
         $query->moneda = $DATA['moneda'];
+        $query->idCentroCosto = $DATA['idCentroCosto'];
         $query->montoContrato = $DATA['montoContrato'];
         $query->idEstadoObra = $DATA['idEstadoObra'];
         $query->fechaInicio = ($DATA['fechaInicio'] != null) ? date("Y-m-d", strtotime(str_replace('/', '-', $DATA['fechaInicio']))) : null;
         $query->fechaFin = ($DATA['fechaInicio'] != null) ? date("Y-m-d", strtotime(str_replace('/', '-', $DATA['fechaFin']))) : null;
+        $query->idUsuario = Session::instance()->get('idUsuario');
         $query->save();
     }
 

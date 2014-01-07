@@ -25,5 +25,12 @@ class Controller_reporte extends Controller_Template_webPage {
 
         //$this->template->content = View::factory('admin/pdf');
     }
+    
+    public function action_centroCosto() {
+        $area=  Model::factory('area')->getAreaList();
+        $this->template->content = View::factory('reporte/centroCosto')
+                ->set('area', $area);
+        
+    }
 }
 

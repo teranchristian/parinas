@@ -22,6 +22,7 @@ class Controller_Template_webPage extends Controller_Template {
      */
     public $script = FALSE;
     public $menu = FALSE;
+    public $validation = FALSE;
     public $title = "";
 
     public function before() {
@@ -53,24 +54,12 @@ class Controller_Template_webPage extends Controller_Template {
 //        if (!SimpleAuth::instance()->logged_in() && (Request::initial()->controller() != 'logon'))
 //            Request::current()->redirect('');
         //========================    
-        //echo 1;
-
-        //++++++++++++++++++++++++    
-        //#Check user auth and role        
-        //echo Request::initial()->action();
-        // echo Request::initial()->controller();    
-        //control user role
-        $action_name = Request::initial()->action();
-//        if (($this->secure_actions !== FALSE))
-//            if (isset($this->secure_actions[Session::instance()->get('Role')]))
-//                if (in_array($action_name, ($this->secure_actions[Session::instance()->get('Role')])))
-//                    Request::current()->redirect('product');
-        //++++++++++++++++++++++++
-        //========================
+        
 
         if ($this->auto_render) {
             // Initialize empty values
             $this->template->content = '';
+            $this->template->validation = '';
 
             $this->template->styles = array();
             $this->template->scripts = array();
@@ -103,23 +92,23 @@ class Controller_Template_webPage extends Controller_Template {
                 );
                 
                 $path = 'media/action/'.Request::initial()->controller().'.js';
-                $additional_js=null;
                 if (file_exists($path)) {
-                    $additional_js=$path;
+                    array_push($scripts,$path);
                 }
 
                 $this->template->header = View::factory('template/header')
-                        ->set('styles', array_merge($this->template->styles, $styles));
+                        ->set('styles', array_merge($this->template->styles, $styles))
+                        ->set('validation', $this->template->validation);
                 //$this->template->header=null;
                 $this->template->menuUser = View::factory('menu-user');
 //$this->template->menuUser=null;
+                
                 $modules = Auth::instance()->getNavigationItems();
                 $this->template->menu = View::factory('menu')
                         ->bind('menu', $this->menu)
                         ->bind('modules', $modules);
-//                $this->template->menu =null;
-                //array_merge($additional_js, $scripts);
-                array_push($scripts,$additional_js);
+                
+                
                 $this->template->footer = View::factory('template/footer')
                         ->set('scripts', array_merge($this->template->scripts, $scripts));
             }

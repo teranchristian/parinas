@@ -96,6 +96,18 @@
                         <b><?php echo ($orden->monedaObra=='PEN')?'SOLES':'DOLARES'; ?></b>
                     </td>
                 </tr>
+                <tr>
+                    <td style="text-align:left;">
+                        <b>TOTAL </b>
+                    </td>
+                    <td style="text-align:right;">
+                        <b><?php echo ($orden->monedaObra=='PEN')?'S/.':'$'; 
+                            $subTotal=$orden->producto->select(array( DB::expr('sum(cantidad*precio)'),'sum'))->where('status','=','ACTIVO')->find()->sum;
+                            $igv = ($orden->IGV / 100) * $subTotal ;
+                            echo number_format($subTotal+$igv,2,'.',',') ;
+                        ?></b>
+                    </td>
+                </tr>
             </table>
         </td>
     </tr>
@@ -132,7 +144,6 @@
     </tr>
     <?php
     $id = 1;
-    $total = 0;
     foreach ($orden->producto->find_all() as $item) :
         ?>
         <tr>
@@ -157,23 +168,22 @@
         </tr>
 
         <?php
-        $total+=($item->cantidad * $item->precio);
     endforeach;
     ?>
     <tr>
         <td style="border: 0mm;" colspan="4"></td>
         <td style="border: 0mm;" style="text-align: right" >SUBTOTAL</td>
-        <td style="text-align: right"  ><?php echo number_format($total,2,'.',','); ?></td>
+        <td style="text-align: right"  ><?php echo number_format($subTotal,2,'.',','); ?></td>
     </tr>
     <tr>
         <td style="border: 0mm;" colspan="4"></td>
-        <td style="border: 0mm;" style="text-align: right" >IGV</td>
-        <td style="text-align: right"  ></td>
+        <td style="border: 0mm;" style="text-align: right" >IGV (<?php echo @$orden->IGV ?>%)</td>
+        <td style="text-align: right"  ><?php $igv = ($orden->IGV / 100) * $subTotal; echo  number_format($igv,2,'.',',')  ?></td>
     </tr>
     <tr>
         <td style="border: 0mm;" colspan="4"></td>
-        <td style="border: 0mm;"  style="text-align: right" >TOTAL</td>
-        <td style="border: 0mm;"  style="text-align: right"  ></td>
+        <td style="border: 0mm;"  style="text-align: right">TOTAL (<?php echo ($orden->monedaObra=='PEN')?'S/.':'$'; ?>)</td>
+        <td style="border: 0mm;"  style="text-align: right"><?php echo  number_format($igv + $subTotal,2,'.',',')  ?></td>
     </tr>
 </table>
 </div>

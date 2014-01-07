@@ -65,12 +65,18 @@ $(function(){
                 <div class="control-group">
                     <label for="idCentroCosto" class="control-label">Centro de Costo</label>
                     <div class="controls" > 
-                        <select name="idCentroCosto" id="idArea">
-                            <?php foreach ($centroCostoList as $item) { 
-                                    if (isset($obra))                                  
-                                        $selected= $item->idCentroCosto == $obra->idCentroCosto ? 'selected':NULL;?>
-                                <option <?php echo @$selected ?> value="<?php echo $item->idCentroCosto ?>"><?php echo $item->codigo . ' - ' . $item->descripcion ?></option>
-                            <?php } ?>
+                        <select name="idCentroCosto" id="idCentroCosto">
+                            <?php foreach ($areaList as $areaitem) : ?>
+                                   <optgroup label="<?php echo $areaitem->area ?>">
+                                       <
+                                       <?php foreach ($areaitem->centroCosto->where('status','=','ACTIVO')->find_all()as $centroCostoitem) : 
+                                           if (isset($obra))                                  
+                                       $selected= $centroCostoitem->idCentroCosto == $obra->idCentroCosto ? 'selected':NULL;?>
+                                        <option value="<?php echo $centroCostoitem->idCentroCosto ?>" <?php echo @$selected ?>><?php echo $centroCostoitem->descripcion ?></option>
+                                        <?php  endforeach;?>
+                                    </optgroup>
+                               
+                            <?php endforeach;?>
                         </select>
                     </div>
                 </div>  
@@ -78,7 +84,7 @@ $(function(){
                 <div class="control-group">
                     <label for="descripcion" class="control-label">Descripcion</label>
                     <div class="controls">
-                        <input  type="text" name="descripcion" id="descripcion"  value="<?php echo @$obra->descripcion ?>"/>
+                        <input class="required" type="text" name="descripcion" id="descripcion"  value="<?php echo @$obra->descripcion ?>"/>
                     </div>
                 </div>
 

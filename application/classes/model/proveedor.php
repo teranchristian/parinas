@@ -33,7 +33,7 @@ class Model_Proveedor extends ORM {
     }
 
     function eliminar($ID) {
-        $query = ORM::factory('obra', $ID);
+        $query = ORM::factory('proveedor', $ID);
         $query->status = 'ELIMINADO';
         $query->save();
     }

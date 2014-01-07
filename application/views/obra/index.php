@@ -7,8 +7,7 @@
         <br/>
         <div class="row">
             <div class="span12">
-                <button type="button" class="btn btn-warning pull-left">Re-Abrir Obra</button>
-                <button type="button" class="btn btn-warning pull-right" onclick="document.location.href='obra/nuevo';">Crear Nueva Obra</button>                
+                <!--menu-->
             </div>
         </div>
         <br/>	
@@ -43,7 +42,7 @@
                     <?php foreach ($obraList as $item) { ?>
                     <tr>
                         <td>
-                            <?php echo $item->codigo?>
+                            <?php echo $item->centroCosto->codigo?>
                         </td>
                         <td>
                             <?php echo $item->descripcion ?>
@@ -55,7 +54,7 @@
                             <?php echo $item->fechaFin == '' ? '<center>--</center>':date("d/m/Y", strtotime($item->fechaFin) )?>
                         </td>
                         <td>
-                            <?php echo $item->descripcionEstatus?>
+                            <?php echo $item->estadoObra->descripcion?>
                         </td>
                         <td>
                             <center><a  class='icon iconEdit'  href="<?php echo URL::site('obra/editar/'.$item->idObra)?>" ></a></center>

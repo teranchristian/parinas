@@ -110,6 +110,7 @@ Kohana::modules(array(
         // 'simpleauth'   => MODPATH.'simpleauth',
        //  'minify'   => MODPATH.'minify',
          'html2pdf'   => MODPATH.'html2pdf',
+         'jqueryvalidation'   => MODPATH.'jqueryvalidation',
 	));
 
 Cookie::$salt = 'parinas';

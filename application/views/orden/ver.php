@@ -8,22 +8,22 @@
     <div class="form" style="margin-top: 40px">      
         <form action="<?php echo URL::site('user/updatePwd') ?>">            
             <div class=" form-horizontal">
-                <div class="control-group">
-                    <label for="current_password" class="control-label" style="width:auto;margin-right: 5px;">Senor(es): </label>
+                 <div class="control-group">
+                    <label for="" class="control-label" style="width:auto;margin-right: 5px;">Senor(es): </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span9" value="BP SOLUTIONS S.A.C NO" readonly="true"/>
-                        <input type="text" class="span2" value="N 28.06.2013-001 NO" readonly="true" />
+                        <input type="text" class="span9" value="<?php echo @$orden->proveedor->proveedor ?>" readonly="true"/>
+                        <input type="text" class="span2 text-right"  readonly="true" value="<?php echo @sprintf('%06u',$orden->numeroOrden)?>"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label for="current_password" class="control-label" style="width:auto;margin-right: 5px;">Direccion : </label>
+                    <label for="" class="control-label" style="width:auto;margin-right: 5px;">Direccion : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span10" value="Av. Del Ejercito 1020 - Urb El Molino - Trujillo NO" readonly="true"/>
-                        <input type="text" class="span1" value="<?php echo @$orden->codigo?>" readonly="true"/>
+                        <input type="text" class="span10" value="<?php echo @$orden->proveedor->direccion ?>" readonly="true"/>
+                        <input type="text" class="span1" value="<?php echo @$orden->obra->centroCosto->codigo?>" readonly="true"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label for="current_password" class="control-label" style="width:auto;margin-right: 33px;">Obra : </label>
+                    <label for="" class="control-label" style="width:auto;margin-right: 33px;">Obra : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
                         <input type="text" class="span9" value="<?php echo @$orden->descripcion ?>" readonly="true"/>
                         <input type="text" class="span2" value="<?php echo @$orden->fechaOrden == '' ? '' : date("d/m/Y", strtotime($orden->fechaOrden)) ?>" readonly="true" />
@@ -32,10 +32,16 @@
                 <div class="control-group">
                     <label for="current_password" class="control-label" style="width:auto;">Solicitante : </label>
                     <div class="controls controls-row row-fluid" style="margin-left:auto">
-                        <input type="text" class="span3" value="Coke" readonly="true"/>
+                        <input type="text" class="span3" value="<?php echo @$orden->solicitante->lastName.', '.@$orden->solicitante->name ?>" readonly="true"/>
                     </div>
                 </div>
-
+                <div class="control-group">
+                    <label for="moneda" class="control-label" style="width:auto;margin-right: 15px;">Moneda : </label>
+                    <div class="controls controls-row row-fluid" style="margin-left:auto">
+                        <input id="moneda" type="text" class="span3" value="<?php echo ($orden->monedaObra=='PEN')?'SOLES':'DOLARES'; ?>" readonly="true"/>
+                    </div>
+                </div>
+                
                 <div class="mainlist">
                     <table border="0" cellpadding="1px" cellspacing="0px"  nowrap="nowrap"  id="productoList" class="table-bordered data-table table table-hover" style="border: 1px solid black;">
                         <thead>
@@ -111,19 +117,18 @@
                         </div>
                     </div>
 <?php } ?>
-                <div class="control-group">
+<!--                <div class="control-group">
                     <label for="current_password" class="control-label">Nueva nota : </label>
                     <div class="controls ">
                         <textarea  rows="5" class="field span8">               
                         </textarea>
                     </div>
-                </div>
+                </div>-->
 
             </div>
             <br/>
             <div class="modal-footer">                            
-                <input type="submit" class="btn btn-success"  value="Guardar"/>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="history.go(-1);">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="history.go(-1);">Regresar</button>
             </div>
         </form>    
     </div>

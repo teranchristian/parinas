@@ -1,26 +1,3 @@
-<!--<script>
-    $(document).ready(function(){
-        $("form").validate({
-            rules: {
-                codigo: { 
-                    required: true
-                },
-                descripcion: { 
-                    required: true
-                }
-            },
-            highlight: function(element) {
-                $(element).closest('.control-group').removeClass('success').addClass('error');
-            },
-            success: function(element) {
-                element
-                .addClass('valid')
-                .closest('.control-group').removeClass('error').addClass('success');
-            }
-        });
-    });
-</script>  -->
-<?php $errors = isset($errors) ? $errors : array(); ?>
 <div class="container">
     <div class="row">
         <div class="span12">
@@ -35,10 +12,11 @@
                     <label for="area" class="control-label">Area</label>
                     <div class="controls" >
                         <select name="idArea" id="idArea"> 
+                            <option  value="">--</option>
                             <?php foreach ($areaList as $item) {
                                  if (isset($centroCosto))                                  
                                     $selected= $item->idArea == $centroCosto->idArea ? 'selected':NULL;?>
-                            <option <?php echo @$selected ?> value="<?php echo $item->idArea?>"><?php echo $item->area?></option>
+                                <option <?php echo @$selected ?> value="<?php echo $item->idArea?>"><?php echo $item->area?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -47,16 +25,13 @@
                     <label for="codigo" class="control-label">Codigo</label>
                     <div class="controls">
                         <input  type="text" name="codigo" id="codigo" value="<?php echo @$centroCosto->codigo ?>"/>
-                        <?php //echo Form::input("codigo", @$centroCosto->codigo); ?>
-                        <span class="error"><?php echo '<br/>'.Arr::get($errors, 'codigo');?></span>                        
                     </div>
                 </div>
                 
                 <div class="control-group">
                     <label for="descripcion" class="control-label">Descripcion</label>
                     <div class="controls">
-                        <input  type="text" name="descripcion" id="descripcion" value="<?php echo @$centroCosto->descripcion ?>"/>
-                        <span class="error"><?php echo '<br/>'.Arr::get($errors, 'descripcion');?></span>                        
+                        <input  type="text" name="descripcion" id="descripcion" value="<?php echo @$centroCosto->descripcion ?>"/>                        
                     </div>
                 </div>
                  
