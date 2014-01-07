@@ -48,23 +48,25 @@ CREATE TABLE IF NOT EXISTS `auth_actions` (
   `navigation_item` tinyint(4) DEFAULT NULL,
   `order` int(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.auth_actions: ~11 rows (approximately)
+-- Dumping data for table mycparinas.auth_actions: ~13 rows (approximately)
 DELETE FROM `auth_actions`;
 /*!40000 ALTER TABLE `auth_actions` DISABLE KEYS */;
 INSERT INTO `auth_actions` (`id`, `date_entered`, `date_modified`, `name`, `module_id`, `type`, `navigation_item`, `order`) VALUES
 	(1, '2009-02-12 18:49:31', '2009-02-12 18:49:31', 'Ver Ordenes', 1, 'gerencia', 1, 1),
 	(2, '2009-02-12 18:49:31', '2009-02-12 18:49:31', 'Nueva Orden', 1, 'nuevo', 1, 2),
 	(3, NULL, NULL, 'Ver Usuario', 2, 'index', 1, 1),
-	(4, NULL, NULL, 'Ver Historial', 3, 'index', 1, 1),
+	(4, NULL, NULL, 'Ver Reporte', 3, 'index', 1, 1),
 	(5, NULL, NULL, 'Ver Centro de Costo', 4, '', 1, 1),
 	(6, NULL, NULL, 'Nuevo Centro de Costo', 4, 'nuevo', 1, 2),
 	(7, NULL, NULL, 'Ver Obras', 5, '', 1, 1),
 	(8, NULL, NULL, 'Nueva Obra', 5, 'nuevo', 1, 2),
 	(9, NULL, NULL, 'Ver Proveedores', 6, '', 1, 1),
 	(10, NULL, NULL, 'Nuevo Proveedor', 6, 'nuevo', 1, 2),
-	(11, NULL, NULL, 'Ver Ordenes', 1, 'logistica', 1, 1);
+	(11, NULL, NULL, 'Ver Ordenes', 1, 'logistica', 1, 1),
+	(12, NULL, NULL, 'Abrir Obra', 5, 'abrir', 1, 3),
+	(13, NULL, NULL, 'Report centro de costo', 3, 'centroCosto', 1, 2);
 /*!40000 ALTER TABLE `auth_actions` ENABLE KEYS */;
 
 
@@ -76,9 +78,9 @@ CREATE TABLE IF NOT EXISTS `auth_actions_auth_roles` (
   `auth_action_id` int(11) DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.auth_actions_auth_roles: ~13 rows (approximately)
+-- Dumping data for table mycparinas.auth_actions_auth_roles: ~16 rows (approximately)
 DELETE FROM `auth_actions_auth_roles`;
 /*!40000 ALTER TABLE `auth_actions_auth_roles` DISABLE KEYS */;
 INSERT INTO `auth_actions_auth_roles` (`id`, `auth_role_id`, `auth_action_id`, `date_modified`) VALUES
@@ -94,7 +96,10 @@ INSERT INTO `auth_actions_auth_roles` (`id`, `auth_role_id`, `auth_action_id`, `
 	(10, 2, 10, NULL),
 	(11, 2, 2, NULL),
 	(12, 2, 11, NULL),
-	(13, 2, 4, NULL);
+	(13, 2, 4, NULL),
+	(14, 1, 12, NULL),
+	(15, 2, 12, NULL),
+	(16, 2, 13, NULL);
 /*!40000 ALTER TABLE `auth_actions_auth_roles` ENABLE KEYS */;
 
 
@@ -110,9 +115,9 @@ CREATE TABLE IF NOT EXISTS `centrocosto` (
   PRIMARY KEY (`idCentroCosto`),
   KEY `FK_centrocosto_area` (`idArea`),
   CONSTRAINT `FK_centrocosto_area` FOREIGN KEY (`idArea`) REFERENCES `area` (`idArea`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.centrocosto: ~23 rows (approximately)
+-- Dumping data for table mycparinas.centrocosto: ~79 rows (approximately)
 DELETE FROM `centrocosto`;
 /*!40000 ALTER TABLE `centrocosto` DISABLE KEYS */;
 INSERT INTO `centrocosto` (`idCentroCosto`, `idArea`, `codigo`, `descripcion`, `creado`, `status`) VALUES
@@ -135,10 +140,7 @@ INSERT INTO `centrocosto` (`idCentroCosto`, `idArea`, `codigo`, `descripcion`, `
 	(17, 2, '2200', 'COCO1', NULL, 'ACTIVO'),
 	(18, 1, '123', 'AS ASDAS ASD1', NULL, 'ELIMINADO'),
 	(19, 2, '12312', 'COKE JEFE 1', NULL, 'ACTIVO'),
-	(20, 1, '123', 'AS ASDAS ASD12', NULL, 'ELIMINADO'),
-	(21, 1, '001', '0', NULL, 'ELIMINADO'),
-	(22, 1, '2', '222', NULL, 'ELIMINADO'),
-	(23, 1, '123', 'TICO', '2013-12-21 18:12:02', 'ELIMINADO');
+	(79, 2, '10002', 'lima parinas', '2014-01-04 12:22:46', 'ACTIVO');
 /*!40000 ALTER TABLE `centrocosto` ENABLE KEYS */;
 
 
@@ -170,15 +172,16 @@ DROP TABLE IF EXISTS `empresa`;
 CREATE TABLE IF NOT EXISTS `empresa` (
   `idEmpresa` int(10) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(120) NOT NULL,
-  `ruc` varchar(20) DEFAULT NULL,
+  `ruc` varchar(20) NOT NULL,
+  `IGV` double NOT NULL,
   PRIMARY KEY (`idEmpresa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mycparinas.empresa: ~1 rows (approximately)
 DELETE FROM `empresa`;
 /*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-INSERT INTO `empresa` (`idEmpresa`, `nombre`, `ruc`) VALUES
-	(1, 'M y C Pariñas S.A.', '20222232750');
+INSERT INTO `empresa` (`idEmpresa`, `nombre`, `ruc`, `IGV`) VALUES
+	(1, 'M y C Pariñas S.A.', '20222232750', 25);
 /*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
 
 
@@ -221,7 +224,7 @@ DELETE FROM `modules`;
 INSERT INTO `modules` (`id`, `name`, `description`, `enabled`, `date_created`, `type`, `order`) VALUES
 	(1, 'Ordenes', 'Lista de Ordenes', 1, '2009-02-12 18:54:00', 'orden', 4),
 	(2, 'Usuarios 2', 'Lista de usuario', 1, NULL, 'usuario', 5),
-	(3, 'Historial', 'reportes pasados', 1, NULL, 'historial', 6),
+	(3, 'Historial', 'reportes pasados', 1, NULL, 'reporte', 6),
 	(4, 'Centro de Costo', 'mantenimiento de centro de costo', 1, NULL, 'centroCosto', 1),
 	(5, 'Obra', 'mantenimiento de Obras', 1, NULL, 'obra', 2),
 	(6, 'Proveedores', 'mantenimiento de proveedores', 1, '2013-12-21 17:18:09', 'proveedor', 3);
@@ -241,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `numeroorden` (
 DELETE FROM `numeroorden`;
 /*!40000 ALTER TABLE `numeroorden` DISABLE KEYS */;
 INSERT INTO `numeroorden` (`id`, `sufijo`, `numeracion`) VALUES
-	(1, '', 7);
+	(1, '', 18);
 /*!40000 ALTER TABLE `numeroorden` ENABLE KEYS */;
 
 
@@ -266,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `obra` (
   CONSTRAINT `FK_obra_centrocosto` FOREIGN KEY (`idCentroCosto`) REFERENCES `centrocosto` (`idCentroCosto`),
   CONSTRAINT `FK_obra_estadoobra` FOREIGN KEY (`idEstadoObra`) REFERENCES `estadoobra` (`idEstadoObra`),
   CONSTRAINT `FK_obra_users` FOREIGN KEY (`idUsuario`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mycparinas.obra: ~22 rows (approximately)
 DELETE FROM `obra`;
@@ -274,7 +277,7 @@ DELETE FROM `obra`;
 INSERT INTO `obra` (`idObra`, `idCentroCosto`, `idEstadoObra`, `idUsuario`, `descripcion`, `montoContrato`, `moneda`, `fechaInicio`, `fechaFin`, `creado`, `status`) VALUES
 	(1, 2, 1, 2, '21', 123, NULL, '2013-07-07', NULL, '2013-07-07 10:30:58', 'ELIMINADO'),
 	(2, 2, 3, 2, 'test', 123, NULL, NULL, NULL, '2013-07-07 10:31:33', 'ELIMINADO'),
-	(3, 2, 1, 2, 'Obra 123', 123, 'd', '2013-07-10', '2013-10-07', '2013-07-07 10:49:18', 'ACTIVO'),
+	(3, 2, 1, 2, 'Obra 123', 123, 'd', '2013-07-10', '2013-10-07', '2013-07-07 10:49:18', 'ELIMINADO'),
 	(4, 2, 1, 2, 'Qwe', 123, NULL, '2013-07-10', NULL, '2013-07-07 10:49:50', 'ELIMINADO'),
 	(5, 2, 1, 2, 'Qwe', 123, NULL, NULL, NULL, '2013-07-07 10:50:08', 'ELIMINADO'),
 	(6, 2, 1, 2, 'Qwe', 13, NULL, NULL, NULL, '2013-07-07 10:50:48', 'ELIMINADO'),
@@ -289,11 +292,12 @@ INSERT INTO `obra` (`idObra`, `idCentroCosto`, `idEstadoObra`, `idUsuario`, `des
 	(15, 2, 1, 2, '21', 123, NULL, '2013-07-07', '2013-11-28', '2013-11-28 20:05:12', 'ELIMINADO'),
 	(16, 2, 1, 2, 'Test 2013', 123, NULL, '2013-11-29', '2013-12-03', '2013-11-28 20:06:01', 'ELIMINADO'),
 	(17, 2, 1, 2, 'Test 2013 123', 123, NULL, '2013-11-29', '2013-12-03', '2013-11-28 20:06:28', 'ELIMINADO'),
-	(18, 2, 1, 2, '21 New', 123, NULL, '2013-07-07', '2013-11-28', '2013-11-28 20:08:56', 'ACTIVO'),
+	(18, 11, 1, 3, 'Reparar Pisos', 123, '', '2013-07-07', '2013-11-28', '2013-11-28 20:08:56', 'ACTIVO'),
 	(19, 2, 1, 2, '21', 123, NULL, '2013-07-07', NULL, '2013-11-28 20:09:21', 'ELIMINADO'),
 	(20, 2, 1, 2, '21', 123, NULL, '2013-07-07', NULL, '2013-11-28 20:09:43', 'ELIMINADO'),
 	(21, 2, 1, 2, '21', 123, NULL, '2013-07-07', NULL, '2013-11-28 20:09:49', 'ELIMINADO'),
-	(22, 2, 1, 2, '21', 123, NULL, '2013-07-07', NULL, '2013-11-28 20:09:58', 'ELIMINADO');
+	(22, 2, 1, 2, '21', 123, NULL, '2013-07-07', NULL, '2013-11-28 20:09:58', 'ELIMINADO'),
+	(23, 19, 1, 3, 'Pintar Techos', 5054, '', NULL, NULL, '2014-01-07 22:01:44', 'ACTIVO');
 /*!40000 ALTER TABLE `obra` ENABLE KEYS */;
 
 
@@ -302,16 +306,18 @@ DROP TABLE IF EXISTS `orden`;
 CREATE TABLE IF NOT EXISTS `orden` (
   `idOrden` int(10) NOT NULL AUTO_INCREMENT,
   `idProcesoOrden` int(11) NOT NULL DEFAULT '1',
-  `numeroOrden` varchar(10) DEFAULT NULL,
   `idProveedor` int(11) NOT NULL,
   `idObra` int(11) DEFAULT NULL,
   `idSolicitante` int(11) NOT NULL,
+  `numeroOrden` varchar(10) DEFAULT NULL,
   `cliente` varchar(100) DEFAULT NULL,
   `fechaOrden` date DEFAULT NULL,
-  `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` varchar(10) NOT NULL DEFAULT 'ACTIVO',
   `moneda` varchar(3) DEFAULT NULL,
   `mensaje` text,
+  `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tipoCambio` double DEFAULT NULL,
+  `IGV` double NOT NULL DEFAULT '0',
+  `status` varchar(10) NOT NULL DEFAULT 'ACTIVO',
   PRIMARY KEY (`idOrden`),
   KEY `FK__obra` (`idObra`),
   KEY `FK_orden_procesoorden` (`idProcesoOrden`),
@@ -321,25 +327,20 @@ CREATE TABLE IF NOT EXISTS `orden` (
   CONSTRAINT `FK_orden_proveedor` FOREIGN KEY (`idProveedor`) REFERENCES `proveedor` (`idProveedor`),
   CONSTRAINT `FK__obra` FOREIGN KEY (`idObra`) REFERENCES `obra` (`idObra`),
   CONSTRAINT `FK__usuario` FOREIGN KEY (`idSolicitante`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.orden: ~13 rows (approximately)
+-- Dumping data for table mycparinas.orden: ~8 rows (approximately)
 DELETE FROM `orden`;
 /*!40000 ALTER TABLE `orden` DISABLE KEYS */;
-INSERT INTO `orden` (`idOrden`, `idProcesoOrden`, `numeroOrden`, `idProveedor`, `idObra`, `idSolicitante`, `cliente`, `fechaOrden`, `creado`, `status`, `moneda`, `mensaje`) VALUES
-	(9, 5, '3', 1, 3, 1, 'Christian Test 2', '2013-12-11', '2013-12-05 20:30:43', 'ACTIVO', 'USD', ''),
-	(10, 3, '2', 2, 11, 2, 'Christian Test 123', '2013-12-11', '2013-12-05 20:31:34', 'ACTIVO', 'USD', ''),
-	(11, 4, '3', 1, 11, 1, 'Felix Teran Suarez', '2013-12-13', '2013-12-05 20:33:45', 'ACTIVO', 'USD', '<b>Montero Jorge Luis</b><span class=\'float:right;\'> - (03:12 am 29/12/2013)</span></br><hr> - nuevo 2</br></p>nueva nota'),
-	(34, 3, '3', 1, 3, 1, '', NULL, '2013-12-13 14:18:20', 'ACTIVO', 'PEN', ''),
-	(35, 5, '3', 1, 18, 1, '', NULL, '2013-12-13 17:21:59', 'ACTIVO', 'PEN', ''),
-	(36, 1, '2', 2, 21, 1, NULL, NULL, '2013-12-30 20:30:04', 'ACTIVO', NULL, NULL),
-	(37, 1, '2', 2, 19, 2, NULL, NULL, '2013-12-30 20:31:45', 'ACTIVO', NULL, NULL),
-	(38, 1, '2', 1, 19, 3, NULL, NULL, '2013-12-30 20:35:06', 'ACTIVO', NULL, NULL),
-	(39, 1, '3', 1, 19, 2, NULL, NULL, '2013-12-30 20:35:31', 'ACTIVO', NULL, NULL),
-	(40, 1, '4', 2, 14, 3, NULL, NULL, '2013-12-30 22:40:56', 'ACTIVO', NULL, NULL),
-	(41, 1, 'D5', 2, 20, 2, NULL, NULL, '2013-12-30 22:53:41', 'ACTIVO', NULL, NULL),
-	(42, 1, 'D6', 1, 21, 2, NULL, NULL, '2013-12-30 22:53:59', 'ACTIVO', NULL, NULL),
-	(43, 1, '7', 2, 20, 3, NULL, NULL, '2013-12-30 22:54:20', 'ACTIVO', NULL, NULL);
+INSERT INTO `orden` (`idOrden`, `idProcesoOrden`, `idProveedor`, `idObra`, `idSolicitante`, `numeroOrden`, `cliente`, `fechaOrden`, `moneda`, `mensaje`, `creado`, `tipoCambio`, `IGV`, `status`) VALUES
+	(9, 5, 1, 3, 2, '3', 'Christian Test 2', '2013-12-11', 'USD', '', '2013-12-05 20:30:43', NULL, 18, 'ACTIVO'),
+	(10, 5, 2, 11, 2, '2', 'Christian Test 123', '2013-12-11', 'PEN', '<b>Montero Jorge Luis</b><span class=\'float:right;\'> - (07:01 pm 03/01/2014)</span></br><hr> - ya se envio la orden</br></p><b>Montero Jorge Luis</b><span class="float:right;"> - (07:01 pm 03/01/2014)</span><br><hr> - cambiado a 10<br><p></p><b>Montero Miguel</b><span class="float:right;"> - (07:01 pm 03/01/2014)</span><br><hr> - estas comprando muchos productos cambilo a cantidad 10<br><p></p><b>Montero Jorge Luis</b><span class="float:right;"> - (07:01 pm 03/01/2014)</span><br><hr> - enviar obra<br><p></p>', '2013-12-05 20:31:34', NULL, 25, 'ACTIVO'),
+	(11, 5, 1, 11, 3, '3', 'Felix Teran Suarez', '2013-12-13', 'USD', '', '2013-12-05 20:33:45', NULL, 25, 'ACTIVO'),
+	(34, 4, 1, 11, 3, '3', 'Eriko Tanabe', NULL, 'USD', '<b>Montero Miguel</b><span class="float:right;"> - (07:01 am 03/01/2014)</span><br><hr> - asd<br><p></p>', '2013-12-13 14:18:20', NULL, 25, 'ACTIVO'),
+	(35, 5, 1, 18, 3, '3', '', NULL, 'PEN', '', '2013-12-13 17:21:59', NULL, 18, 'ACTIVO'),
+	(45, 1, 1, 11, 1, '9', 'Parinas', NULL, 'PEN', '', '2014-01-04 00:50:26', NULL, 25, 'ACTIVO'),
+	(53, 3, 1, 11, 2, '17', 'Logistica 1', NULL, 'PEN', '', '2014-01-04 01:01:02', NULL, 25, 'ACTIVO'),
+	(54, 1, 2, 11, 2, '18', 'Antonio Teran', '2014-07-01', 'PEN', '<b>Montero Jorge Luis</b><span class="float:right;"> - (07:01 pm 03/01/2014)</span><br><hr> - generar nueva orden de compra<br><p></p>', '2014-01-04 12:25:46', NULL, 25, 'ACTIVO');
 /*!40000 ALTER TABLE `orden` ENABLE KEYS */;
 
 
@@ -377,9 +378,9 @@ CREATE TABLE IF NOT EXISTS `producto` (
   PRIMARY KEY (`idProducto`),
   KEY `FK_producto_orden` (`idOrden`),
   CONSTRAINT `FK_producto_orden` FOREIGN KEY (`idOrden`) REFERENCES `orden` (`idOrden`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.producto: ~37 rows (approximately)
+-- Dumping data for table mycparinas.producto: ~44 rows (approximately)
 DELETE FROM `producto`;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 INSERT INTO `producto` (`idProducto`, `idOrden`, `descripcion`, `unidad`, `cantidad`, `precio`, `status`) VALUES
@@ -413,13 +414,20 @@ INSERT INTO `producto` (`idProducto`, `idOrden`, `descripcion`, `unidad`, `canti
 	(60, 9, 'Dos', '4', 4, 4, 'ACTIVO'),
 	(61, 9, 'Three', 'metros', 60, 100, 'ACTIVO'),
 	(62, 11, 'Fierros', 'metros', 23, 8500.3, 'ACTIVO'),
-	(63, 10, 'Producto', 'metros', 23, 20, 'ACTIVO'),
+	(63, 10, 'Polos', 'doces ', 10, 230, 'ACTIVO'),
 	(64, 11, 'Z Flex Policuretano X GLN asdasdasdasd asdasdasdasdasdasdasdjhaksldjlakjsd;lajsdlkjalksdj asdkjhsddlkfjhlsakjdfhl', 'cantidad', 2, 20, 'ACTIVO'),
 	(65, 34, 'Akex', 'dss', 1, 20, 'ACTIVO'),
 	(66, 34, 'Kjh', 'kjh', 123, 2, 'ACTIVO'),
 	(67, 35, 'Clavos', 'docenas', 4, 120, 'ACTIVO'),
 	(68, 35, 'Fierros', 'metros', 40, 4, 'ACTIVO'),
-	(69, 34, 'Polos Negros', 'doces', 3, 100, 'ACTIVO');
+	(69, 34, 'Polos Negros', 'doces', 3, 100, 'ACTIVO'),
+	(70, 53, 'Number 1', 'docenmas', 12, 23, 'ACTIVO'),
+	(71, 54, 'Polos', 'docenas', 12, 230, 'ACTIVO'),
+	(72, 54, 'Jeans', 'docenas', 34, 45, 'ACTIVO'),
+	(73, 53, 'Christian', 'teran', 12, 2, 'ELIMINADO'),
+	(74, 53, 'Christian', 'teran', 12, 2, 'ELIMINADO'),
+	(75, 53, 'Tegt', '12', 22, 12, 'ELIMINADO'),
+	(76, 53, 'Number 2', '121', 12, 12, 'ELIMINADO');
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 
 
@@ -436,14 +444,15 @@ CREATE TABLE IF NOT EXISTS `proveedor` (
   `status` varchar(10) NOT NULL DEFAULT 'ACTIVO',
   `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idProveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.proveedor: ~2 rows (approximately)
+-- Dumping data for table mycparinas.proveedor: ~3 rows (approximately)
 DELETE FROM `proveedor`;
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
 INSERT INTO `proveedor` (`idProveedor`, `proveedor`, `direccion`, `ruc`, `telefono`, `fax`, `email`, `status`, `creado`) VALUES
 	(1, 'ACE - Maestro', 'unit 4/1 cook st', '123', '4759564', '', '', 'ACTIVO', '2013-12-13 13:51:51'),
-	(2, 'ACE', 'calle 1 num 1414, corpad', '', '', '', '', 'ACTIVO', '2013-12-13 14:01:57');
+	(2, 'ACE', 'calle 1 num 1414, corpad', '', '', '', '', 'ACTIVO', '2013-12-13 14:01:57'),
+	(3, '', '', '', '', '', '', 'ELIMINADO', '2014-01-02 20:27:59');
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 
 
@@ -520,14 +529,15 @@ CREATE TABLE IF NOT EXISTS `user_tokens` (
   `created` int(11) DEFAULT NULL,
   `expires` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=340 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=381 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mycparinas.user_tokens: ~2 rows (approximately)
+-- Dumping data for table mycparinas.user_tokens: ~3 rows (approximately)
 DELETE FROM `user_tokens`;
 /*!40000 ALTER TABLE `user_tokens` DISABLE KEYS */;
 INSERT INTO `user_tokens` (`id`, `user_id`, `user_agent`, `token`, `created`, `expires`) VALUES
-	(337, 1, '2a45585bf6fbca9e24972054edb9a714', '2d0336091cbd32eef23fb71cd63225397ccc509a', 1388404618, 1389614218),
-	(339, 2, '2a45585bf6fbca9e24972054edb9a714', '8178b57149f85c3d9bee71ef5bbf8cf52fa2af1c', 1388480392, 1389689992);
+	(374, 1, '2a45585bf6fbca9e24972054edb9a714', '1d78f37f81c115e57b556af2ce3890e79002e66b', 1388798952, 1390008552),
+	(379, 2, '2a45585bf6fbca9e24972054edb9a714', '1e6346049c5f81bc414d70bc61a7ec9d293947cc', 1389085406, 1390295006),
+	(380, 3, '2a45585bf6fbca9e24972054edb9a714', 'eac889bba7ef17fd0ad35db68ec47ec4b58a93f6', 1389098674, 1390308274);
 /*!40000 ALTER TABLE `user_tokens` ENABLE KEYS */;
 
 
